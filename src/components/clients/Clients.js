@@ -1,45 +1,53 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
+import { compose } from "redux";
+import { connect } from "react-redux";
+import { firestoreConnect } from "react-redux-firebase";
+import Spinner from "../layout/Spinner";
 
 class Clients extends Component {
+  state = {
+    totalOwed: null
+  };
+
+  static getDerivedStateFromProps(props, state) {
+    const { clients } = props;
+
+    if (clients) {
+      // Add balances
+      const total = clients.reduce((total, client) => {
+        return total + parseFloat(client.balance.toString());
+      }, 0);
+
+      return { totalOwed: total };
+    }
+
+    return null;
+  }
+
   render() {
-    const clients = [
-      {
-        id: "666",
-        firstName: "Jim",
-        lastName: "McDonald",
-        email: "jim@gmail.com",
-        phone: "555-555-5555",
-        balance: "30.33"
-      },
-      {
-        id: "777",
-        firstName: "Matthew",
-        lastName: "McClenaghan",
-        email: "matt@gmail.com",
-        phone: "555-555-5556",
-        balance: "100"
-      },
-      {
-        id: "888",
-        firstName: "Lucy",
-        lastName: "McClenaghan",
-        email: "luce@gmail.com",
-        phone: "555-555-5557",
-        balance: "10"
-      }
-    ];
+    const { clients } = this.props;
+    const { totalOwed } = this.state;
 
     if (clients) {
       return (
-        <div className="row">
-          <div className="col-md-6">
-            <h2>
-              <i className="fas fa-users" />
-              Clients
-            </h2>
+        <div>
+          <div className="row">
+            <div className="col-md-6">
+              <h2>
+                <i className="fas fa-users" /> Clients
+              </h2>
+            </div>
+            <div className="col-md-6">
+              <h5 className="text-right text secondary">
+                Total Owed:{" "}
+                <span className="text-primary">
+                  £{parseFloat(totalOwed).toFixed(2)}
+                </span>
+              </h5>
+            </div>
           </div>
-          <div className="col-md-6" />
           <table className="table table-striped">
             <thead className="thead-inverse">
               <tr>
@@ -72,9 +80,19 @@ class Clients extends Component {
         </div>
       );
     } else {
-      return <h1>Loading...</h1>;
+      return <Spinner />;
     }
   }
 }
 
-export default Clients;
+Clients.protoTypes = {
+  firestore: PropTypes.object.isRequired,
+  clients: PropTypes.array
+};
+
+export default compose(
+  firestoreConnect([{ collection: "clients" }]),
+  connect((state, props) => ({
+    clients: state.firestore.ordered.clients
+  }))
+)(Clients);

@@ -12,7 +12,7 @@ import "./App.css";
 class App extends Component {
   render() {
     return (
-      <provider store={store}>
+      <Provider store={store}>
         <Router>
           <div className="App">
             <AppNavbar />
@@ -23,7 +23,7 @@ class App extends Component {
             </div>
           </div>
         </Router>
-      </provider>
+      </Provider>
     );
   }
 }
