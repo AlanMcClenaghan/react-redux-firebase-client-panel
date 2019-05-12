@@ -18,10 +18,10 @@ class App extends Component {
           <div className="App">
             <AppNavbar />
             <div className="container">
-              <switch>
+              <Switch>
                 <Route exact path="/" component={Dashboard} />
                 <Route exact path="/client/add" component={AddClient} />
-              </switch>
+              </Switch>
             </div>
           </div>
         </Router>
