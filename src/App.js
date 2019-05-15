@@ -8,6 +8,8 @@ import store from "./store";
 import AppNavbar from "../src/components/layout/AppNavbar";
 import Dashboard from "../src/components/layout/Dashboard";
 import Login from "../src/components/auth/Login";
+import Register from "../src/components/auth/Register";
+import Settings from "../src/components/settings/Settings";
 import AddClient from "../src/components/clients/AddClient";
 import EditClient from "../src/components/clients/EditClient";
 import ClientDetails from "../src/components/clients/ClientDetails";
@@ -35,6 +37,11 @@ class App extends Component {
                 />
                 <Route
                   exact
+                  path="/register"
+                  component={UserIsNotAuthenticated(Register)}
+                />
+                <Route
+                  exact
                   path="/client/add"
                   component={UserIsAuthenticated(AddClient)}
                 />
@@ -47,6 +54,11 @@ class App extends Component {
                   exact
                   path="/client/:id"
                   component={UserIsAuthenticated(ClientDetails)}
+                />
+                <Route
+                  exact
+                  path="/settings"
+                  component={UserIsAuthenticated(Settings)}
                 />
               </Switch>
             </div>
