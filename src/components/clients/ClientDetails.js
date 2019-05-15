@@ -116,10 +116,10 @@ class ClientDetails extends Component {
                         "text-success": client.balance <= 0
                       })}
                     >
-                      ${parseFloat(client.balance).toFixed(2)}
+                      ${parseFloat(client.balance).toFixed(2)}{" "}
                     </span>
                     <small>
-                      <a href="#!" onClick={this.toggleBalanceEdit}>
+                      <a href="#" onClick={this.toggleBalanceEdit}>
                         <i className="fas fa-pencil-alt" />
                       </a>
                     </small>
@@ -127,9 +127,7 @@ class ClientDetails extends Component {
                   {balanceForm}
                 </div>
               </div>
-
-              <hr />
-              <ul className="list-group">
+              <ul className="list-group mt-3">
                 <li className="list-group-item">
                   Contact Email: {client.email}
                 </li>
